@@ -1,0 +1,8 @@
+version: '3'
+services:
+  api:
+    build: .
+    ports:
+      - "5050:5000"
+    volumes:
+      - .:/usr/src
