@@ -39,10 +39,7 @@ def latest_discussion(office_id):
 @app.route('/nws-office')
 def nws_office_list():
     manager = NWSOfficeManager()
-    offices = [office.serialize() for office in manager.all()]
-    for office in offices:
-        office.pop('geometry')
-    return jsonify(offices)
+    return jsonify(list(manager.all()))
 
 
 @app.route('/nws-office/<office_id>')
@@ -50,7 +47,7 @@ def nws_office_detail(office_id):
     manager = NWSOfficeManager()
     office = manager.get(office_id)
     if office:
-        return jsonify(office.serialize())
+        return jsonify(office)
     else:
         abort(404)
 
