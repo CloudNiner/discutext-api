@@ -6,7 +6,7 @@ import sys
 
 import boto3
 from botocore.exceptions import ClientError
-from flask import Flask, abort, jsonify
+from flask import Flask, abort, jsonify, request
 
 from fd.nws_office import NWSOfficeManager
 from fd.scraper import scrape_discussion
@@ -97,7 +97,13 @@ def latest_discussion(office_id):
 @app.route('/nws-office')
 def nws_office_list():
     manager = NWSOfficeManager()
-    return jsonify(list(manager.all()))
+    offices = manager.all()
+
+    name = request.args.get('name', None)
+    if name:
+        offices = filter(lambda o: name.lower() in o['CityState'].lower(), offices)
+
+    return jsonify(list(offices))
 
 
 @app.route('/nws-office/<office_id>')
