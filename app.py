@@ -7,6 +7,7 @@ import sys
 import boto3
 from botocore.exceptions import ClientError
 from flask import Flask, abort, jsonify, request
+from flask_cors import CORS
 
 from fd.nws_office import NWSOfficeManager
 from fd.scraper import scrape_discussion
@@ -20,6 +21,8 @@ handler.setLevel(logging.DEBUG)
 logger.addHandler(handler)
 
 app = Flask(__name__)
+CORS(app)
+
 s3 = boto3.resource('s3')
 
 
