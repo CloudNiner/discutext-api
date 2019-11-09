@@ -1,4 +1,4 @@
-# discutext-api
+# DiscuText API
 
 API serving https://api.discutext.com, written with [Flask](https://github.com/pallets/flask/) and deployed with [Zappa](https://github.com/Miserlou/Zappa).
 
@@ -8,3 +8,39 @@ API serving https://api.discutext.com, written with [Flask](https://github.com/p
 
 - Docker
 - Docker Compose v3+
+
+For deploying:
+
+- Python 3
+- Virtualenv
+- Virtualenvwrapper (optional as a convenience)
+
+Ensure you have an `AWS_PROFILE=discutext` configured with the appropriate permissions for AWS API Gateway + Lambda + S3.
+
+## Developing
+
+Start API container with:
+
+```bash
+docker-compose up
+```
+
+The API server will be available at http://localhost:5050
+
+## Deploying
+
+Create or activate a virtualenv and ensure dependencies are up to date:
+
+```bash
+mkvirtualenv --python python3.7 discutext
+# OR
+workon discutext
+
+pip3 install -r requirements.txt
+```
+
+Then run `zappa` to deploy:
+
+```bash
+zappa update production
+```
