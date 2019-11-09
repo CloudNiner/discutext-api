@@ -2,3 +2,4 @@ boto3==1.7.62
 flask==1.0.2
 flask-cors==3.0.6
 requests==2.18.4
+zappa==0.48.2
