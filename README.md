@@ -1,6 +1,6 @@
 # discutext-api
 
-API serving discutext, written with [Flask](https://github.com/pallets/flask/) and deployed with [Zappa](https://github.com/Miserlou/Zappa).
+API serving https://api.discutext.com, written with [Flask](https://github.com/pallets/flask/) and deployed with [Zappa](https://github.com/Miserlou/Zappa).
 
 ## Getting Started
 
