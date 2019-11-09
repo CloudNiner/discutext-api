@@ -10,10 +10,13 @@ from flask import Flask, abort, jsonify, request
 from flask_cors import CORS
 
 from fd.nws_office import NWSOfficeManager
+from fd.nws_weather_api import NWSWeatherAPI
 from fd.scraper import scrape_discussion
 
 
 DISCUSSION_FETCH_TIMEOUT = timedelta(hours=1)
+
+DISCUTEXT_VERSION = '0.1.0'
 
 logger = logging.getLogger(__name__)
 handler = logging.StreamHandler(sys.stdout)
@@ -24,6 +27,9 @@ app = Flask(__name__)
 CORS(app)
 
 s3 = boto3.resource('s3')
+
+user_agent = 'discutext {v}: operations@discutext.com'.format(v=DISCUTEXT_VERSION)
+nws_api = NWSWeatherAPI(user_agent=user_agent)
 
 
 def copy_s3_object(s3_resource, src_bucket, src_key, dest_bucket, dest_key):
@@ -76,7 +82,7 @@ def latest_discussion(office_id):
         # TODO: Better cache busting
         except (ClientError, ValueError):
             logger.info('Retrieving new discussion for {}'.format(office_id))
-            discussion = scrape_discussion(office_id)
+            discussion = scrape_discussion(nws_api, office_id)
             discussion_dict = discussion.serialize()
             discussion_datetime = datetime.fromtimestamp(discussion_dict['valid_at'], timezone.utc)
             permanent_path = ('discussions/{0}/{1}/{2:02d}/{3:02d}/{0}-{1}{2:02d}{3:02d}T{4:02d}.json'

@@ -13,7 +13,7 @@ This document describes how to generate the county warning areas vector tiles us
 Download the latest [County Warning Areas](https://www.weather.gov/gis/CWABounds) shapefile.
 
 Go to [mapshaper](https://mapshaper.org), upload the zip file, and re-export as GeoJson
-after simplifying to about 2.5% and clicking "repair". 
+after simplifying to about 2.5% and clicking "repair".
 
 Install the tools noted above in the "Dependencies" section
 
