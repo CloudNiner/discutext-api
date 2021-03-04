@@ -44,3 +44,15 @@ Then run `zappa` to deploy:
 ```bash
 zappa update production
 ```
+
+## Service Shutdown
+
+Shutdown this service in March 2021 because Reader Mode on my iPad now formats the forecast discussions nicely. 
+
+The following actions were taken:
+- `zappa undeploy production`
+- Deleted AWS ACM Certificate
+- Deleted AWS Route 53 Hosted Zone
+- Deleted mailgun account
+- Cancelled domain autorenewal
+
