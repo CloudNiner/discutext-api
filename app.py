@@ -99,7 +99,7 @@ def latest_discussion(office_id):
     else:
         logger.warning('S3 bucket not configured, caching disabled')
         logger.info('Retrieving new discussion for {}'.format(office_id))
-        discussion = scrape_discussion(office_id)
+        discussion = scrape_discussion(nws_api, office_id)
         return jsonify(discussion.serialize())
 
 
