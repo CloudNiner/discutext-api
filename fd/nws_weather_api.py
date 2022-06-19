@@ -3,13 +3,15 @@ from urllib.parse import urljoin
 import requests
 
 
-class NWSWeatherAPI():
+class NWSWeatherAPI:
 
     session = requests.Session()
 
     def __init__(self, user_agent=None):
-        self.user_agent = user_agent if user_agent is not None else 'python NWSWeatherAPI 0.0.1'
-        self.session.headers.update({'user-agent': self.user_agent})
+        self.user_agent = (
+            user_agent if user_agent is not None else "python NWSWeatherAPI 0.0.1"
+        )
+        self.session.headers.update({"user-agent": self.user_agent})
 
     def _get(self, path):
         HOSTNAME = "https://api.weather.gov"

@@ -1,13 +1,15 @@
-import dateutil
 import logging
 import re
 
-logger = logging.getLogger('fd.discussion')
+import dateutil
+
+logger = logging.getLogger("fd.discussion")
 
 
 class ForecastDiscussion(object):
-    """ ForecastDiscussion, unique on (wfo, valid_at)."""
-    HEADER_REGEX = re.compile(r'\.(?P<header>[\w \/]+)\.{3}(?P<text>.*)', re.DOTALL)
+    """ForecastDiscussion, unique on (wfo, valid_at)."""
+
+    HEADER_REGEX = re.compile(r"\.(?P<header>[\w \/]+)\.{3}(?P<text>.*)", re.DOTALL)
 
     def __init__(self, wfo_id, valid_at_str, text):
         self.text = text
@@ -17,10 +19,10 @@ class ForecastDiscussion(object):
 
     def serialize(self):
         return {
-            'wfo': self.wfo_id,
-            'valid_at': self.valid_at,
-            'text': self.text,
-            'sections': self.sections
+            "wfo": self.wfo_id,
+            "valid_at": self.valid_at,
+            "text": self.text,
+            "sections": self.sections,
         }
 
     def _parse_iso_str(self, iso_str):
@@ -29,7 +31,7 @@ class ForecastDiscussion(object):
         return int(valid_dt.timestamp())
 
     def _clean_section_text(self, text):
-        """ Split into paragraphs.
+        """Split into paragraphs.
 
         Steps:
             - Replace newlines separated by only zero or more whitespace with double newlines
@@ -39,8 +41,10 @@ class ForecastDiscussion(object):
               - Reduce each occurence of one or more spaces with one space
               - Strip whitespace from ends of paragraph
         """
-        paragraphs = re.sub(r'\n\s*\n', '\n\n', text).split('\n\n')
-        return [re.sub(r' +', " ", p.replace("\n", " ")).strip() for p in paragraphs if p]
+        paragraphs = re.sub(r"\n\s*\n", "\n\n", text).split("\n\n")
+        return [
+            re.sub(r" +", " ", p.replace("\n", " ")).strip() for p in paragraphs if p
+        ]
 
     def _parse_text(self):
         if self.text is None or len(self.text) == 0:
@@ -52,8 +56,11 @@ class ForecastDiscussion(object):
             if match is not None:
                 matches.append(match.groupdict())
             else:
-                matches.append({'header': '', 'text': section})
-        return [{
-            'header': m.get('header', ''),
-            'paragraphs': self._clean_section_text(m.get('text', ''))
-        } for m in matches]
+                matches.append({"header": "", "text": section})
+        return [
+            {
+                "header": m.get("header", ""),
+                "paragraphs": self._clean_section_text(m.get("text", "")),
+            }
+            for m in matches
+        ]
