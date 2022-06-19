@@ -6,40 +6,24 @@ Written with [Flask](https://github.com/pallets/flask/) and deployed with [Zappa
 
 ### Requirements
 
-- Docker
-- Docker Compose v3+
+- Python 3
+- (Optional) [direnv](https://direnv.net)
 
 For deploying:
-
-- Python 3
-- Virtualenv
-- Virtualenvwrapper (optional as a convenience)
 
 Ensure you have an `AWS_PROFILE=discutext` configured with the appropriate permissions for AWS API Gateway + Lambda + S3.
 
 ## Developing
 
-Start API container with:
+Run `./scripts/setup` to create a virtualenv and install dependencies into it.
 
-```bash
-docker-compose up
-```
+If using `direnv`, run `direnv allow`, otherwise activate virtualenv with `source .venv/bin/activate`.
 
-The API server will be available at http://localhost:5050
+Start the service with `python3 app.py`. The API server will be available at http://localhost:5050
 
 ## Deploying
 
-Create or activate a virtualenv and ensure dependencies are up to date:
-
-```bash
-mkvirtualenv --python python3.7 discutext
-# OR
-workon discutext
-
-pip3 install -r requirements.txt
-```
-
-Then run `zappa` to deploy:
+Run `zappa` to deploy:
 
 ```bash
 zappa update production
