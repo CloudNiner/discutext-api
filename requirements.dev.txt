@@ -3,3 +3,8 @@ flake8
 ipython
 ipdb
 isort
+mypy
+# mypy types
+boto3-stubs[s3]
+types-python-dateutil
+types-requests
