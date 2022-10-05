@@ -1,12 +1,12 @@
+import json
 import logging
 import re
 from datetime import datetime
 from typing import List
 
-import dateutil
 from pydantic import BaseModel
 
-from ..nws_weather_api import AFDProduct
+from .nws_weather_api import AFDProduct, NWSWeatherAPI
 
 logger = logging.getLogger(__name__)
 
@@ -35,6 +35,11 @@ class ForecastDiscussion(BaseModel):
             text=afd_product.productText,
             sections=cls._parse_text(afd_product.productText),
         )
+
+    @classmethod
+    def from_nws_api(cls, nws_api: NWSWeatherAPI, wfo_id: str):
+        afd_product = nws_api.get_afd_latest(wfo_id)
+        return cls.from_afd_product(afd_product)
 
     @classmethod
     def _clean_section_text(cls, text: str) -> List[str]:
@@ -74,3 +79,9 @@ class ForecastDiscussion(BaseModel):
             )
             for m in matches
         ]
+
+    def json_dict(self):
+        return json.loads(self.json())
+
+    class Config:
+        json_encoders = {datetime: lambda dt: dt.isoformat()}

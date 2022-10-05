@@ -9,18 +9,13 @@ from botocore.exceptions import ClientError
 from flask import Flask, abort, jsonify, request
 from flask_cors import CORS
 
+from discutext_api.models import ForecastDiscussion
 from discutext_api.nws_office import NWSOfficeManager
 from discutext_api.nws_weather_api import NWSWeatherAPI
-from discutext_api.scraper import scrape_discussion
 
 DISCUSSION_FETCH_TIMEOUT = timedelta(hours=1)
 
 DISCUTEXT_VERSION = "0.1.0"
-
-logger = logging.getLogger(__name__)
-handler = logging.StreamHandler(sys.stdout)
-handler.setLevel(logging.DEBUG)
-logger.addHandler(handler)
 
 app = Flask(__name__)
 CORS(app)
@@ -66,7 +61,7 @@ def search_lat_lon(lat, lon):
 @app.route("/discussion/<office_id>/latest")
 def latest_discussion(office_id):
     bucket = os.environ.get("AWS_S3_STORAGE_BUCKET", None)
-    logger.debug("Bucket: {}".format(bucket))
+    app.logger.debug("Bucket: {}".format(bucket))
     if bucket:
         discussion_path = "discussions/{}/{}-latest.json".format(office_id, office_id)
         # Attempt to load from S3 cache
@@ -76,14 +71,14 @@ def latest_discussion(office_id):
                 timezone.utc
             ):
                 raise ValueError()
-            logger.info("Returning S3 cached discussion for {}".format(office_id))
+            app.logger.info("Returning S3 cached discussion for {}".format(office_id))
             discussion = ForecastDiscussion.parse_obj(json.load(obj.get()["Body"]))
-            return discussion.dict()
+            return discussion.json_dict()
         # If there are any failures, parse new discussion and save to S3
         # TODO: Better cache busting
         except (ClientError, ValueError):
-            logger.info("Retrieving new discussion for {}".format(office_id))
-            discussion = scrape_discussion(nws_api, office_id)
+            app.logger.info("Retrieving new discussion for {}".format(office_id))
+            discussion = ForecastDiscussion.from_nws_api(nws_api, office_id)
             permanent_path = "discussions/{0}/{1}/{2:02d}/{3:02d}/{0}-{1}{2:02d}{3:02d}T{4:02d}.json".format(
                 office_id,
                 discussion.valid_at.year,
@@ -91,17 +86,16 @@ def latest_discussion(office_id):
                 discussion.valid_at.day,
                 discussion.valid_at.hour,
             )
-            logger.info(
+            app.logger.info(
                 "Saving discussion to S3: s3://{}/{}".format(bucket, permanent_path)
             )
             obj.put(Body=discussion.json())
             copy_s3_object(s3, bucket, discussion_path, bucket, permanent_path)
-            return discussion.dict()
+            return discussion.json_dict()
     else:
-        logger.warning("S3 bucket not configured, caching disabled")
-        logger.info("Retrieving new discussion for {}".format(office_id))
-        discussion = scrape_discussion(nws_api, office_id)
-        return discussion.dict()
+        app.logger.warning("S3 bucket not configured, caching disabled")
+        app.logger.info("Retrieving new discussion for {}".format(office_id))
+        return ForecastDiscussion.from_nws_api(nws_api, office_id).json_dict()
 
 
 @app.route("/nws-office")

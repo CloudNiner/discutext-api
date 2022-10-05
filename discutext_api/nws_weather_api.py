@@ -1,3 +1,5 @@
+import logging
+import sys
 from datetime import datetime
 from typing import Any, Dict
 from urllib.parse import urljoin
@@ -5,6 +7,11 @@ from urllib.parse import urljoin
 import dateutil
 import requests
 from pydantic import BaseModel, validator
+
+logger = logging.getLogger(__name__)
+handler = logging.StreamHandler(sys.stdout)
+handler.setLevel(logging.DEBUG)
+logger.addHandler(handler)
 
 
 class AFDProduct(BaseModel):
@@ -20,9 +27,14 @@ class AFDProduct(BaseModel):
                 raise ValueError(f"No tzinfo found on {v}")
             return valid_at
         elif isinstance(v, datetime):
+            if v.tzinfo is None:
+                raise ValueError(f"No tzinfo found on {v}")
             return v
         else:
-            raise ValueError("issuanceTime must be datetile or ISO str")
+            raise ValueError("issuanceTime must be datetime or ISO str")
+
+    class Config:
+        json_encoders = {datetime: lambda dt: dt.isoformat()}
 
 
 class NWSWeatherAPI:
@@ -53,4 +65,5 @@ class NWSWeatherAPI:
         response = self.get_products_types_locations("AFD", wfo_id)
         discussion_id = response["@graph"][0]["id"]
         product_response = self._get(f"/products/{discussion_id}")
+        logger.info(product_response.json())
         return AFDProduct.parse_obj({"wfo_id": wfo_id, **product_response.json()})
