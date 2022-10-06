@@ -2,14 +2,14 @@
   "production": {
     "app_function": "app.app",
     "aws_region": "us-east-2",
-    "certificate_arn": "arn:aws:acm:us-east-1:285111186802:certificate/a4f3c434-b23e-43fe-b78a-d5804e46d728",
+    "certificate_arn": "arn:aws:acm:us-east-1:420010887577:certificate/36adf811-328a-4fdb-b437-f4149f062c7f",
     "domain": "api.discutext.com",
     "environment_variables": {
-      "AWS_S3_STORAGE_BUCKET": "production-discutext-us-east-2"
+      "AWS_S3_STORAGE_BUCKET": "discutext-api-production-us-east-2"
     },
-    "profile_name": "discutext",
+    "profile_name": "discutext-api-zappa-deploy",
     "project_name": "discutext-api",
     "runtime": "python3.9",
-    "s3_bucket": "discutext-zappa-deployments-us-east-2"
+    "s3_bucket": "discutext-api-zappa-deployments-us-east-2"
   }
 }
