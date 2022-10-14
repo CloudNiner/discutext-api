@@ -71,11 +71,9 @@ class ForecastDiscussion(BaseModel):
             else:
                 matches.append({"header": "", "text": section})
         return [
-            ForecastDiscussionSection.parse_obj(
-                {
-                    "header": m.get("header", ""),
-                    "paragraphs": cls._clean_section_text(m.get("text", "")),
-                }
+            ForecastDiscussionSection(
+                header=m.get("header", ""),
+                paragraphs=cls._clean_section_text(m.get("text", "")),
             )
             for m in matches
         ]

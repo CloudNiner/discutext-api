@@ -1,7 +1,5 @@
 import json
-import logging
 import os
-import sys
 from datetime import datetime, timedelta, timezone
 
 import boto3
@@ -65,14 +63,15 @@ def latest_discussion(office_id):
     if bucket:
         discussion_path = "discussions/{}/{}-latest.json".format(office_id, office_id)
         # Attempt to load from S3 cache
+        obj = s3.Object(bucket_name=bucket, key=discussion_path)
         try:
-            obj = s3.Object(bucket_name=bucket, key=discussion_path)
             if obj.last_modified + DISCUSSION_FETCH_TIMEOUT < datetime.now(
                 timezone.utc
             ):
                 raise ValueError()
             app.logger.info("Returning S3 cached discussion for {}".format(office_id))
-            discussion = ForecastDiscussion.parse_obj(json.load(obj.get()["Body"]))
+            discussion_body = obj.get()["Body"]
+            discussion = ForecastDiscussion.parse_obj(json.load(discussion_body))
             return discussion.json_dict()
         # If there are any failures, parse new discussion and save to S3
         # TODO: Better cache busting
