@@ -4,8 +4,8 @@ from datetime import datetime
 from typing import Any, Dict
 from urllib.parse import urljoin
 
-import dateutil
 import requests
+from dateutil.parser import parse as dateutil_parse
 from pydantic import BaseModel, validator
 
 logger = logging.getLogger(__name__)
@@ -20,9 +20,9 @@ class AFDProduct(BaseModel):
     productText: str
 
     @validator("issuanceTime")
-    def validate_issuanceTime(cls, v):
+    def validate_issuanceTime(cls, v: Any) -> datetime:
         if isinstance(v, str):
-            valid_at: datetime = dateutil.parser.parse(v)
+            valid_at: datetime = dateutil_parse(v)
             if valid_at.tzinfo is None:
                 raise ValueError(f"No tzinfo found on {v}")
             return valid_at
@@ -41,10 +41,8 @@ class NWSWeatherAPI:
 
     session = requests.Session()
 
-    def __init__(self, user_agent: str = None):
-        self.user_agent = (
-            user_agent if user_agent is not None else "python NWSWeatherAPI 0.0.1"
-        )
+    def __init__(self, user_agent: str = ""):
+        self.user_agent = user_agent if user_agent else "python NWSWeatherAPI 0.0.1"
         self.session.headers.update({"user-agent": self.user_agent})
 
     def _get(self, path: str) -> requests.Response:

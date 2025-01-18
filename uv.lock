@@ -226,6 +226,7 @@ dependencies = [
     { name = "flask" },
     { name = "flask-cors" },
     { name = "pydantic" },
+    { name = "python-dateutil" },
     { name = "requests" },
     { name = "zappa" },
 ]
@@ -250,6 +251,7 @@ requires-dist = [
     { name = "flask", specifier = ">=2.1.2,<3" },
     { name = "flask-cors", specifier = ">=3.0.10,<4" },
     { name = "pydantic", specifier = ">=1.10.0,<2" },
+    { name = "python-dateutil", specifier = ">=2.9.0,<3" },
     { name = "requests", specifier = ">=2.28.0,<3" },
     { name = "zappa", specifier = "==0.54.1" },
 ]
