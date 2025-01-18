@@ -127,22 +127,6 @@ wheels = [
 ]
 
 [[package]]
-name = "build"
-version = "1.2.2.post1"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "colorama", marker = "os_name == 'nt'" },
-    { name = "importlib-metadata" },
-    { name = "packaging" },
-    { name = "pyproject-hooks" },
-    { name = "tomli" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/7d/46/aeab111f8e06793e4f0e421fcad593d547fb8313b50990f31681ee2fb1ad/build-1.2.2.post1.tar.gz", hash = "sha256:b36993e92ca9375a219c99e606a122ff365a760a2d4bba0caa09bd5278b608b7", size = 46701 }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/84/c2/80633736cd183ee4a62107413def345f7e6e3c01563dbca1417363cf957e/build-1.2.2.post1-py3-none-any.whl", hash = "sha256:1d61c0887fa860c01971625baae8bdd338e517b836a2f70dd1f7aa3a6b2fc5b5", size = 22950 },
-]
-
-[[package]]
 name = "certifi"
 version = "2024.12.14"
 source = { registry = "https://pypi.org/simple" }
@@ -241,6 +225,7 @@ dev = [
     { name = "ipython" },
     { name = "isort" },
     { name = "mypy" },
+    { name = "setuptools" },
     { name = "types-python-dateutil" },
     { name = "types-requests" },
 ]
@@ -253,7 +238,7 @@ requires-dist = [
     { name = "pydantic", specifier = ">=1.10.0,<2" },
     { name = "python-dateutil", specifier = ">=2.9.0,<3" },
     { name = "requests", specifier = ">=2.28.0,<3" },
-    { name = "zappa", specifier = "==0.54.1" },
+    { name = "zappa", specifier = "==0.59.0" },
 ]
 
 [package.metadata.requires-dev]
@@ -266,6 +251,7 @@ dev = [
     { name = "ipython" },
     { name = "isort" },
     { name = "mypy" },
+    { name = "setuptools", specifier = "==69.5.1" },
     { name = "types-python-dateutil" },
     { name = "types-requests" },
 ]
@@ -348,15 +334,6 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/cf/25/e3b2553d22ed542be807739556c69621ad2ab276ae8d5d2560f4ed20f652/Flask-Cors-3.0.10.tar.gz", hash = "sha256:b60839393f3b84a0f3746f6cdca56c1ad7426aa738b70d6c61375857823181de", size = 30867 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/db/84/901e700de86604b1c4ef4b57110d4e947c218b9997adf5d38fa7da493bce/Flask_Cors-3.0.10-py2.py3-none-any.whl", hash = "sha256:74efc975af1194fc7891ff5cd85b0f7478be4f7f59fe158102e91abb72bb4438", size = 14067 },
-]
-
-[[package]]
-name = "future"
-version = "1.0.0"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/a7/b2/4140c69c6a66432916b26158687e821ba631a4c9273c474343badf84d3ba/future-1.0.0.tar.gz", hash = "sha256:bd2968309307861edae1458a4f8a4f3598c03be43b97521076aebf5d94c07b05", size = 1228490 }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/da/71/ae30dadffc90b9006d77af76b393cb9dfbfc9629f339fc1574a1c52e6806/future-1.0.0-py3-none-any.whl", hash = "sha256:929292d34f5872e70396626ef385ec22355a1fae8ad29e1a734c3e43f9fbc216", size = 491326 },
 ]
 
 [[package]]
@@ -617,28 +594,10 @@ wheels = [
 ]
 
 [[package]]
-name = "pip-tools"
-version = "7.4.1"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "build" },
-    { name = "click" },
-    { name = "pip" },
-    { name = "pyproject-hooks" },
-    { name = "setuptools" },
-    { name = "tomli" },
-    { name = "wheel" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/1a/87/1ef453f10fb0772f43549686f924460cc0a2404b828b348f72c52cb2f5bf/pip-tools-7.4.1.tar.gz", hash = "sha256:864826f5073864450e24dbeeb85ce3920cdfb09848a3d69ebf537b521f14bcc9", size = 145417 }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/0d/dc/38f4ce065e92c66f058ea7a368a9c5de4e702272b479c0992059f7693941/pip_tools-7.4.1-py3-none-any.whl", hash = "sha256:4c690e5fbae2f21e87843e89c26191f0d9454f362d8acdbd695716493ec8b3a9", size = 61235 },
-]
-
-[[package]]
 name = "placebo"
-version = "0.10.0"
+version = "0.9.0"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/d0/43/187e14a5e53a4541e7be5352699b91b709dcf8fb757fd1da07e9671195e6/placebo-0.10.0.tar.gz", hash = "sha256:390db04f3f3486790b583dc18cb0bc116f195f196d4e58195adb4bb543ebe0bd", size = 15123 }
+sdist = { url = "https://files.pythonhosted.org/packages/18/35/a60e29abebe274da55a62261a070c173bbb5faf1e6f3b35ac292d944d632/placebo-0.9.0.tar.gz", hash = "sha256:03157f8527bbc2965b71b88f4a139ef8038618b346787f20d63e3c5da541b047", size = 13555 }
 
 [[package]]
 name = "platformdirs"
@@ -735,15 +694,6 @@ wheels = [
 ]
 
 [[package]]
-name = "pyproject-hooks"
-version = "1.2.0"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/e7/82/28175b2414effca1cdac8dc99f76d660e7a4fb0ceefa4b4ab8f5f6742925/pyproject_hooks-1.2.0.tar.gz", hash = "sha256:1e859bd5c40fae9448642dd871adf459e5e2084186e8d2c2a79a824c970da1f8", size = 19228 }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/bd/24/12818598c362d7f300f18e74db45963dbcb85150324092410c8b49405e42/pyproject_hooks-1.2.0-py3-none-any.whl", hash = "sha256:9e5c6bfa8dcc30091c74b0cf803c81fdd29d94f01992a7707bc97babb1141913", size = 10216 },
-]
-
-[[package]]
 name = "python-dateutil"
 version = "2.9.0.post0"
 source = { registry = "https://pypi.org/simple" }
@@ -825,11 +775,11 @@ wheels = [
 
 [[package]]
 name = "setuptools"
-version = "75.8.0"
+version = "69.5.1"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/92/ec/089608b791d210aec4e7f97488e67ab0d33add3efccb83a056cbafe3a2a6/setuptools-75.8.0.tar.gz", hash = "sha256:c5afc8f407c626b8313a86e10311dd3f661c6cd9c09d4bf8c15c0e11f9f2b0e6", size = 1343222 }
+sdist = { url = "https://files.pythonhosted.org/packages/d6/4f/b10f707e14ef7de524fe1f8988a294fb262a29c9b5b12275c7e188864aed/setuptools-69.5.1.tar.gz", hash = "sha256:6c1fccdac05a97e598fb0ae3bbed5904ccb317337a51139dcd51453611bbb987", size = 2291314 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/69/8a/b9dc7678803429e4a3bc9ba462fa3dd9066824d3c607490235c6a796be5a/setuptools-75.8.0-py3-none-any.whl", hash = "sha256:e3982f444617239225d675215d51f6ba05f845d4eec313da4418fdbb56fb27e3", size = 1228782 },
+    { url = "https://files.pythonhosted.org/packages/f7/29/13965af254e3373bceae8fb9a0e6ea0d0e571171b80d6646932131d6439b/setuptools-69.5.1-py3-none-any.whl", hash = "sha256:c636ac361bc47580504644275c9ad802c50415c7522212252c033bd15f301f32", size = 894566 },
 ]
 
 [[package]]
@@ -1012,41 +962,31 @@ wheels = [
 ]
 
 [[package]]
-name = "wsgi-request-logger"
-version = "0.4.6"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/04/dd/5e6c52b96a841baec75e5c5647460214aa02e9c4902c7b250375352224c0/wsgi-request-logger-0.4.6.tar.gz", hash = "sha256:445d7ec52799562f812006394d0b4a7064b37084c6ea6bd74ea7a2136c97ed83", size = 4380 }
-
-[[package]]
 name = "zappa"
-version = "0.54.1"
+version = "0.59.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "argcomplete" },
     { name = "boto3" },
     { name = "durationpy" },
-    { name = "future" },
     { name = "hjson" },
     { name = "jmespath" },
     { name = "kappa" },
     { name = "pip" },
-    { name = "pip-tools" },
+    { name = "placebo" },
     { name = "python-dateutil" },
     { name = "python-slugify" },
     { name = "pyyaml" },
     { name = "requests" },
-    { name = "six" },
     { name = "toml" },
     { name = "tqdm" },
     { name = "troposphere" },
     { name = "werkzeug" },
     { name = "wheel" },
-    { name = "wsgi-request-logger" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/a7/22/89f97b38350ee2d7bca2754324c5e4fc88eb5696351026e41e03afc85ada/zappa-0.54.1.tar.gz", hash = "sha256:5d4e45fee5fe988d0198bd75d6a1df5b89b3b201260b5d9d1d50a06ad735fd76", size = 170276 }
+sdist = { url = "https://files.pythonhosted.org/packages/72/a8/a29c409fe23bbb187c329c409fb7f96b63747f8af6b895192a95d8a9bf42/zappa-0.59.0.tar.gz", hash = "sha256:239c25eb949cadafc6dc2efe94230191d3e99c1bf437529d99bb933ff409d55e", size = 204546 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/d3/92/1e374d7a7b265fcd03440983ac7a907d61192c7be8b92fd4bb09961d93bd/zappa-0.54.1-py2.py3-none-any.whl", hash = "sha256:c77b7017f99a2042f3cce99eef188684e857de9a797e008dead6260c4df61207", size = 116246 },
-    { url = "https://files.pythonhosted.org/packages/90/96/15430d603457dbb8a58e35cbc551ce729d758358cbac31466e0886b62c9c/zappa-0.54.1-py3-none-any.whl", hash = "sha256:85d6103b5ae936a181e36011dd48ce9c4f7c0603357684e56149faf27fa92cd9", size = 116701 },
+    { url = "https://files.pythonhosted.org/packages/75/d3/dc0e154e572c810b4354a8aab7c2d0471f8718009f81001046fb420c271d/zappa-0.59.0-py3-none-any.whl", hash = "sha256:4f5f2459ce0acb72a9aa2241ce0aa48661d651196055738769017eaad8422017", size = 118479 },
 ]
 
 [[package]]
