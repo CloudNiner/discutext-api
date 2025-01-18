@@ -1,9 +1,6 @@
 #!/usr/bin/env bash
-set -x
+set -e
 
-#shellcheck disable=SC1091
-source .venv/bin/activate
-
-isort .
-black .
-mypy app.py discutext_api
+uv run isort .
+uv run black .
+uv run mypy app.py discutext_api

@@ -1,1 +1,1 @@
-AWS_PROFILE=discutext-api-dev AWS_S3_STORAGE_BUCKET=discutext-api-development-us-east-2 python3 app.py
+AWS_PROFILE=discutext-api-dev AWS_S3_STORAGE_BUCKET=discutext-api-development-us-east-2 uv run app.py

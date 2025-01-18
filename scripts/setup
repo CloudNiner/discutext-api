@@ -1,13 +1,10 @@
 #!/usr/bin/env bash
 
-set -x
+set -e
 
-if [ ! -d ".venv" ]; then
-    echo "Creating new python3 virtualenv in .venv..."
-    python3.9 -m venv .venv
+if ! command -v uv &> /dev/null; then
+    echo "uv package manager not installed. See https://docs.astral.sh/uv/getting-started/installation/ to continue."
+    exit 1
 fi
-
-# shellcheck disable=SC1091
-source .venv/bin/activate
 
 ./scripts/update
