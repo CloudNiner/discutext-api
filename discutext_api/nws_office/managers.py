@@ -1,30 +1,33 @@
 import json
 import os
+from typing import Generator
+
+from .models import NWSOffice, NWSOfficeProperties
 
 
 class NWSOfficeManager(object):
-    def __init__(self):
+    def __init__(self) -> None:
         officefile = os.path.join(
             os.path.dirname(__file__), "county-warning-areas.json"
         )
         with open(officefile, "r") as data:
             self._data = json.load(data)
 
-    def get(self, wfo_id: str):
+    def get(self, wfo_id: str) -> NWSOffice | None:
         """Return geojson feature for the requested wfo id."""
         for cwa in self._data["features"]:
             properties = cwa.get("properties", {})
             if properties.get("WFO", None) == wfo_id:
-                return cwa
+                return NWSOffice.parse_obj(cwa)
         return None
 
-    def all(self):
+    def all(self) -> Generator[NWSOfficeProperties, None, None]:
         """Return iterator of all CWA features without geometry."""
         features = self._data["features"]
         for feature in features:
-            yield feature["properties"]
+            yield NWSOfficeProperties.parse_obj(feature["properties"])
 
-    def check(self):
+    def check(self) -> None:
         """Test method to print differences between CWA id and WFO id."""
         for cwa in self._data["features"]:
             properties = cwa.get("properties", {})

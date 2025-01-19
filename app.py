@@ -1,15 +1,22 @@
 import json
 import os
 from datetime import datetime, timedelta, timezone
+from typing import TYPE_CHECKING, Any, Iterable
 
 import boto3
 from botocore.exceptions import ClientError
-from flask import Flask, abort, jsonify, request
+from flask import Flask, Response, abort, jsonify, request
 from flask_cors import CORS
 
 from discutext_api.models import ForecastDiscussion
 from discutext_api.nws_office import NWSOfficeManager
+from discutext_api.nws_office.models import NWSOfficeProperties
 from discutext_api.nws_weather_api import NWSWeatherAPI
+
+if TYPE_CHECKING:
+    from mypy_boto3_s3 import S3ServiceResource
+    from mypy_boto3_s3.type_defs import CopySourceTypeDef
+
 
 DISCUSSION_FETCH_TIMEOUT = timedelta(hours=1)
 
@@ -18,14 +25,20 @@ DISCUTEXT_VERSION = "0.1.0"
 app = Flask(__name__)
 CORS(app)
 
-s3 = boto3.resource("s3")
+s3: "S3ServiceResource" = boto3.resource("s3")
 
 user_agent = "discutext {v}: operations@discutext.com".format(v=DISCUTEXT_VERSION)
 nws_api = NWSWeatherAPI(user_agent=user_agent)
 
 
-def copy_s3_object(s3_resource, src_bucket, src_key, dest_bucket, dest_key):
-    copy_src = {
+def copy_s3_object(
+    s3_resource: "S3ServiceResource",
+    src_bucket: str,
+    src_key: str,
+    dest_bucket: str,
+    dest_key: str,
+) -> None:
+    copy_src: "CopySourceTypeDef" = {
         "Bucket": src_bucket,
         "Key": src_key,
     }
@@ -34,30 +47,30 @@ def copy_s3_object(s3_resource, src_bucket, src_key, dest_bucket, dest_key):
 
 
 @app.route("/")
-def hello():
+def hello() -> Response:
     return jsonify({"message": "Welcome to the discutext API"})
 
 
 @app.route("/search/<lat>/<lon>")
-def search_lat_lon(lat, lon):
+def search_lat_lon(lat: str, lon: str) -> Response:
     # TODO: Remove? Client might have to implement this with something like turf.js
     #       since supporting geospatial operations is a mess in Lambda
     # TODO: Write and use better FloatConverter
     #       http://werkzeug.pocoo.org/docs/0.14/routing/#werkzeug.routing.FloatConverter
     try:
-        lat = float(lat)
+        lat_float = float(lat)
     except ValueError:
         abort(400)
     try:
-        lon = float(lon)
+        lon_float = float(lon)
     except ValueError:
         abort(400)
 
-    return "Search: ({}, {})\n".format(lat, lon)
+    return jsonify({"latitude": lat_float, "longitude": lon_float})
 
 
 @app.route("/discussion/<office_id>/latest")
-def latest_discussion(office_id):
+def latest_discussion(office_id: str) -> Any:
     bucket = os.environ.get("AWS_S3_STORAGE_BUCKET", None)
     app.logger.debug("Bucket: {}".format(bucket))
     if bucket:
@@ -98,33 +111,33 @@ def latest_discussion(office_id):
 
 
 @app.route("/nws-office")
-def nws_office_list():
+def nws_office_list() -> Response:
     manager = NWSOfficeManager()
-    offices = manager.all()
+    offices: Iterable[NWSOfficeProperties] = manager.all()
 
     name = request.args.get("name", None)
     if name:
-        offices = filter(lambda o: name.lower() in o["CityState"].lower(), offices)
+        offices = filter(lambda o: name.lower() in o.CityState.lower(), offices)
 
-    return jsonify(list(offices))
+    return jsonify([o.dict() for o in offices])
 
 
 @app.route("/nws-office/<office_id>")
-def nws_office_detail(office_id):
+def nws_office_detail(office_id: str) -> Response:
     manager = NWSOfficeManager()
     office = manager.get(office_id)
     if office:
-        return jsonify(office)
+        return jsonify(office.dict())
     else:
         abort(404)
 
 
 @app.route("/nws-office/<office_id>/geojson")
-def nws_office_detail_geojson(office_id):
+def nws_office_detail_geojson(office_id: str) -> Response:
     manager = NWSOfficeManager()
-    office = manager.geojson(office_id)
+    office = manager.get(office_id)
     if office:
-        return jsonify(office)
+        return jsonify(office.geometry)
     else:
         abort(404)
 

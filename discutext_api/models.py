@@ -2,10 +2,11 @@ import json
 import logging
 import re
 from datetime import datetime
-from typing import List
+from typing import Any, List, Self
 
 from pydantic import BaseModel
 
+from .encoders import datetime_encoder
 from .nws_weather_api import AFDProduct, NWSWeatherAPI
 
 logger = logging.getLogger(__name__)
@@ -28,7 +29,7 @@ class ForecastDiscussion(BaseModel):
     sections: List[ForecastDiscussionSection]
 
     @classmethod
-    def from_afd_product(cls, afd_product: AFDProduct):
+    def from_afd_product(cls, afd_product: AFDProduct) -> Self:
         return cls(
             wfo_id=afd_product.wfo_id,
             valid_at=afd_product.issuanceTime,
@@ -37,7 +38,7 @@ class ForecastDiscussion(BaseModel):
         )
 
     @classmethod
-    def from_nws_api(cls, nws_api: NWSWeatherAPI, wfo_id: str):
+    def from_nws_api(cls, nws_api: NWSWeatherAPI, wfo_id: str) -> Self:
         afd_product = nws_api.get_afd_latest(wfo_id)
         return cls.from_afd_product(afd_product)
 
@@ -60,10 +61,10 @@ class ForecastDiscussion(BaseModel):
 
     @classmethod
     def _parse_text(cls, afd_text: str) -> List[ForecastDiscussionSection]:
-        if afd_text is None or len(afd_text) == 0:
+        if not afd_text:
             raise ValueError("afd_text cannot be empty")
-        sections = afd_text.split("&&")
-        matches = []
+        sections: list[str] = afd_text.split("&&")
+        matches: list[dict[str, str]] = []
         for section in sections:
             match = HEADER_REGEX.search(section)
             if match is not None:
@@ -78,8 +79,8 @@ class ForecastDiscussion(BaseModel):
             for m in matches
         ]
 
-    def json_dict(self):
+    def json_dict(self) -> Any:
         return json.loads(self.json())
 
     class Config:
-        json_encoders = {datetime: lambda dt: dt.isoformat()}
+        json_encoders = {datetime: datetime_encoder}

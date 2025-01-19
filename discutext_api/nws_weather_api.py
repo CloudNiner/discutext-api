@@ -8,6 +8,8 @@ import requests
 from dateutil.parser import parse as dateutil_parse
 from pydantic import BaseModel, validator
 
+from .encoders import datetime_encoder
+
 logger = logging.getLogger(__name__)
 handler = logging.StreamHandler(sys.stdout)
 handler.setLevel(logging.DEBUG)
@@ -34,14 +36,14 @@ class AFDProduct(BaseModel):
             raise ValueError("issuanceTime must be datetime or ISO str")
 
     class Config:
-        json_encoders = {datetime: lambda dt: dt.isoformat()}
+        json_encoders = {datetime: datetime_encoder}
 
 
 class NWSWeatherAPI:
 
     session = requests.Session()
 
-    def __init__(self, user_agent: str = ""):
+    def __init__(self, user_agent: str = "") -> None:
         self.user_agent = user_agent if user_agent else "python NWSWeatherAPI 0.0.1"
         self.session.headers.update({"user-agent": self.user_agent})
 
