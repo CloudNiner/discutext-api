@@ -10,7 +10,7 @@ class NWSOfficeManager(object):
         with open(officefile, "r") as data:
             self._data = json.load(data)
 
-    def get(self, wfo_id):
+    def get(self, wfo_id: str):
         """Return geojson feature for the requested wfo id."""
         for cwa in self._data["features"]:
             properties = cwa.get("properties", {})

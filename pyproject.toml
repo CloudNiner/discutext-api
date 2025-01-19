@@ -3,7 +3,7 @@ name = "discutext-api"
 version = "0.1.0"
 description = "API for NWS Forecast Discussions"
 readme = "README.md"
-requires-python = ">=3.9, <3.10"
+requires-python = ">=3.12, <3.13"
 dependencies = [
     "boto3>=1.24.12,<2",
     "flask>=2.1.2,<3",
@@ -23,8 +23,7 @@ dev = [
     "ipdb",
     "isort",
     "mypy",
-    # https://github.com/zappa/Zappa/issues/1349
-    "setuptools==69.5.1",
+    "setuptools==69.5.1",   # https://github.com/zappa/Zappa/issues/1349
     "boto3-stubs[s3]",
     "types-python-dateutil",
     "types-requests"
