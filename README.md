@@ -6,7 +6,7 @@ Written with [Flask](https://github.com/pallets/flask/) and deployed with [Zappa
 
 ### Requirements
 
-- Python 3.9
+- Python 3.12
 - [uv](https://docs.astral.sh/uv/) package manager
 
 For deploying:
