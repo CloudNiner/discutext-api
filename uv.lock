@@ -231,7 +231,7 @@ dev = [
 requires-dist = [
     { name = "boto3", specifier = ">=1.24.12,<2" },
     { name = "flask", specifier = ">=2.1.2,<3" },
-    { name = "flask-cors", specifier = ">=3.0.10,<4" },
+    { name = "flask-cors", specifier = ">=5,<6" },
     { name = "pydantic", specifier = ">=1.10.0,<2" },
     { name = "python-dateutil", specifier = ">=2.9.0,<3" },
     { name = "requests", specifier = ">=2.28.0,<3" },
@@ -312,15 +312,14 @@ wheels = [
 
 [[package]]
 name = "flask-cors"
-version = "3.0.10"
+version = "5.0.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "flask" },
-    { name = "six" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/cf/25/e3b2553d22ed542be807739556c69621ad2ab276ae8d5d2560f4ed20f652/Flask-Cors-3.0.10.tar.gz", hash = "sha256:b60839393f3b84a0f3746f6cdca56c1ad7426aa738b70d6c61375857823181de", size = 30867 }
+sdist = { url = "https://files.pythonhosted.org/packages/4f/d0/d9e52b154e603b0faccc0b7c2ad36a764d8755ef4036acbf1582a67fb86b/flask_cors-5.0.0.tar.gz", hash = "sha256:5aadb4b950c4e93745034594d9f3ea6591f734bb3662e16e255ffbf5e89c88ef", size = 30954 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/db/84/901e700de86604b1c4ef4b57110d4e947c218b9997adf5d38fa7da493bce/Flask_Cors-3.0.10-py2.py3-none-any.whl", hash = "sha256:74efc975af1194fc7891ff5cd85b0f7478be4f7f59fe158102e91abb72bb4438", size = 14067 },
+    { url = "https://files.pythonhosted.org/packages/56/07/1afa0514c876282bebc1c9aee83c6bb98fe6415cf57b88d9b06e7e29bf9c/Flask_Cors-5.0.0-py2.py3-none-any.whl", hash = "sha256:b9e307d082a9261c100d8fb0ba909eec6a228ed1b60a8315fd85f783d61910bc", size = 14463 },
 ]
 
 [[package]]
