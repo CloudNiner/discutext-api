@@ -9,7 +9,7 @@
     },
     "profile_name": "discutext-api-zappa-deploy",
     "project_name": "discutext-api",
-    "runtime": "python3.9",
+    "runtime": "python3.12",
     "s3_bucket": "discutext-api-zappa-deployments-us-east-2"
   }
 }
