@@ -4,7 +4,7 @@ import re
 from datetime import datetime
 from typing import Any, List, Self
 
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 from .encoders import datetime_encoder
 from .nws_weather_api import AFDProduct, NWSWeatherAPI
@@ -80,7 +80,6 @@ class ForecastDiscussion(BaseModel):
         ]
 
     def json_dict(self) -> Any:
-        return json.loads(self.json())
+        return json.loads(self.model_dump_json())
 
-    class Config:
-        json_encoders = {datetime: datetime_encoder}
+    model_config = ConfigDict(json_encoders={datetime: datetime_encoder})

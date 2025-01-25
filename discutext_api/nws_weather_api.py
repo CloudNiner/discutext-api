@@ -6,7 +6,7 @@ from urllib.parse import urljoin
 
 import requests
 from dateutil.parser import parse as dateutil_parse
-from pydantic import BaseModel, validator
+from pydantic import BaseModel, ConfigDict, field_validator
 
 from .encoders import datetime_encoder
 
@@ -21,7 +21,8 @@ class AFDProduct(BaseModel):
     issuanceTime: datetime
     productText: str
 
-    @validator("issuanceTime")
+    @field_validator("issuanceTime")
+    @classmethod
     def validate_issuanceTime(cls, v: Any) -> datetime:
         if isinstance(v, str):
             valid_at: datetime = dateutil_parse(v)
@@ -35,8 +36,7 @@ class AFDProduct(BaseModel):
         else:
             raise ValueError("issuanceTime must be datetime or ISO str")
 
-    class Config:
-        json_encoders = {datetime: datetime_encoder}
+    model_config = ConfigDict(json_encoders={datetime: datetime_encoder})
 
 
 class NWSWeatherAPI:
@@ -66,4 +66,4 @@ class NWSWeatherAPI:
         discussion_id = response["@graph"][0]["id"]
         product_response = self._get(f"/products/{discussion_id}")
         logger.info(product_response.json())
-        return AFDProduct.parse_obj({"wfo_id": wfo_id, **product_response.json()})
+        return AFDProduct.model_validate({"wfo_id": wfo_id, **product_response.json()})

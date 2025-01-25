@@ -18,14 +18,14 @@ class NWSOfficeManager(object):
         for cwa in self._data["features"]:
             properties = cwa.get("properties", {})
             if properties.get("WFO", None) == wfo_id:
-                return NWSOffice.parse_obj(cwa)
+                return NWSOffice.model_validate(cwa)
         return None
 
     def all(self) -> Generator[NWSOfficeProperties, None, None]:
         """Return iterator of all CWA features without geometry."""
         features = self._data["features"]
         for feature in features:
-            yield NWSOfficeProperties.parse_obj(feature["properties"])
+            yield NWSOfficeProperties.model_validate(feature["properties"])
 
     def check(self) -> None:
         """Test method to print differences between CWA id and WFO id."""

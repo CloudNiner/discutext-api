@@ -17,5 +17,5 @@ class NWSOfficeProperties(BaseModel):
 
 
 class NWSOffice(BaseModel):
-    geometry: Any
+    geometry: Any = None
     properties: NWSOfficeProperties
