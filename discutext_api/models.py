@@ -1,12 +1,10 @@
-import json
 import logging
 import re
 from datetime import datetime
-from typing import Any, List, Self
+from typing import List, Self
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, field_serializer
 
-from .encoders import datetime_encoder
 from .nws_weather_api import AFDProduct, NWSWeatherAPI
 
 logger = logging.getLogger(__name__)
@@ -27,6 +25,10 @@ class ForecastDiscussion(BaseModel):
     wfo_id: str
     valid_at: datetime
     sections: List[ForecastDiscussionSection]
+
+    @field_serializer("valid_at")
+    def serialize_valid_at(self, valid_at: datetime) -> str:
+        return valid_at.isoformat()
 
     @classmethod
     def from_afd_product(cls, afd_product: AFDProduct) -> Self:
@@ -78,8 +80,3 @@ class ForecastDiscussion(BaseModel):
             )
             for m in matches
         ]
-
-    def json_dict(self) -> Any:
-        return json.loads(self.model_dump_json())
-
-    model_config = ConfigDict(json_encoders={datetime: datetime_encoder})

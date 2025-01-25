@@ -6,9 +6,7 @@ from urllib.parse import urljoin
 
 import requests
 from dateutil.parser import parse as dateutil_parse
-from pydantic import BaseModel, ConfigDict, field_validator
-
-from .encoders import datetime_encoder
+from pydantic import BaseModel, field_serializer, field_validator
 
 logger = logging.getLogger(__name__)
 handler = logging.StreamHandler(sys.stdout)
@@ -20,6 +18,10 @@ class AFDProduct(BaseModel):
     wfo_id: str
     issuanceTime: datetime
     productText: str
+
+    @field_serializer("issuanceTime")
+    def serialize_issuanceTime(self, valid_at: datetime) -> str:
+        return valid_at.isoformat()
 
     @field_validator("issuanceTime")
     @classmethod
@@ -35,8 +37,6 @@ class AFDProduct(BaseModel):
             return v
         else:
             raise ValueError("issuanceTime must be datetime or ISO str")
-
-    model_config = ConfigDict(json_encoders={datetime: datetime_encoder})
 
 
 class NWSWeatherAPI:

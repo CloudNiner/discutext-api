@@ -85,7 +85,7 @@ def latest_discussion(office_id: str) -> Any:
             app.logger.info("Returning S3 cached discussion for {}".format(office_id))
             discussion_body = obj.get()["Body"]
             discussion = ForecastDiscussion.model_validate(json.load(discussion_body))
-            return discussion.json_dict()
+            return discussion.model_dump()
         # If there are any failures, parse new discussion and save to S3
         # TODO: Better cache busting
         except (ClientError, ValueError):
@@ -103,11 +103,11 @@ def latest_discussion(office_id: str) -> Any:
             )
             obj.put(Body=discussion.model_dump_json())
             copy_s3_object(s3, bucket, discussion_path, bucket, permanent_path)
-            return discussion.json_dict()
+            return discussion.model_dump()
     else:
         app.logger.warning("S3 bucket not configured, caching disabled")
         app.logger.info("Retrieving new discussion for {}".format(office_id))
-        return ForecastDiscussion.from_nws_api(nws_api, office_id).json_dict()
+        return ForecastDiscussion.from_nws_api(nws_api, office_id).model_dump()
 
 
 @app.route("/nws-office")
