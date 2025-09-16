@@ -1,6 +1,6 @@
 [project]
 name = "discutext-api"
-version = "0.1.0"
+version = "1.0.0"
 description = "API for NWS Forecast Discussions"
 readme = "README.md"
 requires-python = ">=3.12, <3.13"
