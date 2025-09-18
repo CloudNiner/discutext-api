@@ -119,7 +119,7 @@ def nws_office_list() -> Response:
     if name:
         offices = filter(lambda o: name.lower() in o.CityState.lower(), offices)
 
-    return jsonify([o.dict() for o in offices])
+    return jsonify([o.model_dump() for o in offices])
 
 
 @app.route("/nws-office/<office_id>")
@@ -127,7 +127,7 @@ def nws_office_detail(office_id: str) -> Response:
     manager = NWSOfficeManager()
     office = manager.get(office_id)
     if office:
-        return jsonify(office.dict())
+        return jsonify(office.model_dump())
     else:
         abort(404)
 
