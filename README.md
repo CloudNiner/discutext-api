@@ -19,6 +19,14 @@ Run `./scripts/setup` to initialize the project.
 
 Start the service with `./scripts/server`. The API server will be available at http://localhost:5050
 
+## Docker build
+
+```shell
+DISCUTEXT_REGISTRY=...
+DISCUTEXT_VERSION=...
+docker build --platform linux/amd64 --platform linux/arm64 -t ${DISCUTEXT_REGISTRY}/discutext:latest -t ${DISCUTEXT_REGISTRY}/discutext:${DISCUTEXT_VERSION} .
+```
+
 ## Deploying
 
 Run `zappa` to deploy:
