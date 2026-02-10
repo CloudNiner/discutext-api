@@ -7,9 +7,7 @@ from .models import NWSOffice, NWSOfficeProperties
 
 class NWSOfficeManager(object):
     def __init__(self) -> None:
-        officefile = os.path.join(
-            os.path.dirname(__file__), "county-warning-areas.json"
-        )
+        officefile = os.path.join(os.path.dirname(__file__), "county-warning-areas.json")
         with open(officefile, "r") as data:
             self._data = json.load(data)
 

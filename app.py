@@ -88,7 +88,7 @@ def latest_discussion(office_id: str) -> Any:
             return discussion.model_dump()
         # If there are any failures, parse new discussion and save to S3
         # TODO: Better cache busting
-        except (ClientError, ValueError):
+        except ClientError, ValueError:
             app.logger.info("Retrieving new discussion for {}".format(office_id))
             discussion = ForecastDiscussion.from_nws_api(nws_api, office_id)
             permanent_path = "discussions/{0}/{1}/{2:02d}/{3:02d}/{0}-{1}{2:02d}{3:02d}T{4:02d}.json".format(

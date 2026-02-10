@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 set -e
 
-uv run isort .
-uv run black .
-uv run mypy app.py discutext_api
+uv run ruff check discutext_api
+uv run ruff format discutext_api

@@ -3,7 +3,7 @@ name = "discutext-api"
 version = "1.0.0"
 description = "API for NWS Forecast Discussions"
 readme = "README.md"
-requires-python = ">=3.12, <3.13"
+requires-python = ">=3.14, <3.15"
 dependencies = [
     "boto3>=1.24.12,<2",
     "flask>=3,<4",
@@ -11,7 +11,7 @@ dependencies = [
     "pydantic>=2,<3",
     "python-dateutil>=2.9.0,<3",
     "requests>=2.28.0,<3",
-    "zappa==0.59.0",
+    "zappa>=0.61.4,<0.62",
 ]
 
 [dependency-groups]
@@ -20,14 +20,17 @@ deploy = [
 ]
 dev = [
     "awscli",
-    "black",
-    "flake8",
     "ipython",
     "ipdb",
-    "isort",
-    "mypy",
-    "setuptools==69.5.1",   # https://github.com/zappa/Zappa/issues/1349
     "boto3-stubs[s3]",
     "types-python-dateutil",
-    "types-requests"
+    "types-requests",
+    "basedpyright>=1.37.4",
+    "ruff>=0.15.0",
 ]
+
+[tool.pyright]
+typeCheckingMode = "recommended"
+
+[tool.ruff]
+line-length = 100

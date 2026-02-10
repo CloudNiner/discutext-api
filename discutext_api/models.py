@@ -57,9 +57,7 @@ class ForecastDiscussion(BaseModel):
                 - Strip whitespace from ends of paragraph
         """
         paragraphs = re.sub(r"\n\s*\n", "\n\n", text).split("\n\n")
-        return [
-            re.sub(r" +", " ", p.replace("\n", " ")).strip() for p in paragraphs if p
-        ]
+        return [re.sub(r" +", " ", p.replace("\n", " ")).strip() for p in paragraphs if p]
 
     @classmethod
     def _parse_text(cls, afd_text: str) -> List[ForecastDiscussionSection]:

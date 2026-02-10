@@ -40,7 +40,6 @@ class AFDProduct(BaseModel):
 
 
 class NWSWeatherAPI:
-
     session = requests.Session()
 
     def __init__(self, user_agent: str = "") -> None:
@@ -54,9 +53,7 @@ class NWSWeatherAPI:
         response.raise_for_status()
         return response
 
-    def get_products_types_locations(
-        self, type_id: str, location_id: str
-    ) -> Dict[str, Any]:
+    def get_products_types_locations(self, type_id: str, location_id: str) -> Dict[str, Any]:
         path = "/products/types/{t}/locations/{l}".format(t=type_id, l=location_id)
         response = self._get(path)
         return response.json()

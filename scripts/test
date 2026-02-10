@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+set -e
+
+./scripts/lint
+
+uv run basedpyright discutext_api
