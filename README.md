@@ -18,6 +18,8 @@ Ensure you have an `AWS_PROFILE=discutext-api-zappa-deploy` configured with the 
 
 Run `./scripts/setup` to initialize the project.
 
+Run `./scripts/test` to run linting, formatting, and type checking.
+
 Start the service with `./scripts/server`. The API server will be available at http://localhost:5050
 
 ## Docker build
@@ -30,19 +32,15 @@ docker build --platform linux/amd64 --platform linux/arm64 -t ${DISCUTEXT_REGIST
 
 ## Deploying
 
-Run `zappa` to deploy:
+Run `./scripts/update` to update the existing deployment.
 
-```bash
-uv run zappa update production
-```
-
-For initial deployment, instead run `uv run zappa deploy production`.
+For initial deployment, instead run `zappa deploy production`.
 
 ## Shutting Down
 
 To undeploy the service and cleanup the AWS account:
 
-- `uv run zappa undeploy production`
+- `zappa undeploy production`
 - Delete AWS API Gateway Custom Domain Name
 - Delete AWS CloudFront Distribution for Custom Domain Name
 - Delete AWS ACM Certificate in us-east-1

@@ -7,10 +7,9 @@
     "environment_variables": {
       "AWS_S3_STORAGE_BUCKET": "discutext-api-production-us-east-2"
     },
-    "slim_handler": true,
     "profile_name": "discutext-api-zappa-deploy",
     "project_name": "discutext-api",
-    "runtime": "python3.12",
+    "runtime": "python3.14",
     "s3_bucket": "discutext-api-zappa-deployments-us-east-2"
   }
 }

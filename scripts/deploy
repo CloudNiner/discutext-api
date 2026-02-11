@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -e
+
+# Zappa deploys the active virtualenv so first remove the dev dependencies
+# for a slim package, then restore them afterwards
+uv sync --no-dev
+zappa update production
+uv sync
