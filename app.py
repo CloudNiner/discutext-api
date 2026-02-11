@@ -78,9 +78,7 @@ def latest_discussion(office_id: str) -> Any:
         # Attempt to load from S3 cache
         obj = s3.Object(bucket_name=bucket, key=discussion_path)
         try:
-            if obj.last_modified + DISCUSSION_FETCH_TIMEOUT < datetime.now(
-                timezone.utc
-            ):
+            if obj.last_modified + DISCUSSION_FETCH_TIMEOUT < datetime.now(timezone.utc):
                 raise ValueError()
             app.logger.info("Returning S3 cached discussion for {}".format(office_id))
             discussion_body = obj.get()["Body"]
@@ -91,16 +89,16 @@ def latest_discussion(office_id: str) -> Any:
         except ClientError, ValueError:
             app.logger.info("Retrieving new discussion for {}".format(office_id))
             discussion = ForecastDiscussion.from_nws_api(nws_api, office_id)
-            permanent_path = "discussions/{0}/{1}/{2:02d}/{3:02d}/{0}-{1}{2:02d}{3:02d}T{4:02d}.json".format(
-                office_id,
-                discussion.valid_at.year,
-                discussion.valid_at.month,
-                discussion.valid_at.day,
-                discussion.valid_at.hour,
+            permanent_path = (
+                "discussions/{0}/{1}/{2:02d}/{3:02d}/{0}-{1}{2:02d}{3:02d}T{4:02d}.json".format(
+                    office_id,
+                    discussion.valid_at.year,
+                    discussion.valid_at.month,
+                    discussion.valid_at.day,
+                    discussion.valid_at.hour,
+                )
             )
-            app.logger.info(
-                "Saving discussion to S3: s3://{}/{}".format(bucket, permanent_path)
-            )
+            app.logger.info("Saving discussion to S3: s3://{}/{}".format(bucket, permanent_path))
             obj.put(Body=discussion.model_dump_json())
             copy_s3_object(s3, bucket, discussion_path, bucket, permanent_path)
             return discussion.model_dump()

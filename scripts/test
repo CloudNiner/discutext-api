@@ -3,4 +3,4 @@ set -e
 
 ./scripts/lint
 
-uv run basedpyright discutext_api
+uv run basedpyright .
