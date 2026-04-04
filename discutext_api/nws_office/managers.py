@@ -1,11 +1,14 @@
 import json
 import os
-from typing import Generator
+from collections.abc import Generator
+from typing import Any
 
 from .models import NWSOffice, NWSOfficeProperties
 
 
 class NWSOfficeManager(object):
+    _data: dict[str, Any]
+
     def __init__(self) -> None:
         officefile = os.path.join(os.path.dirname(__file__), "county-warning-areas.json")
         with open(officefile, "r") as data:

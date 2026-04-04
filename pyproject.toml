@@ -22,7 +22,7 @@ dev = [
     "awscli",
     "ipython",
     "ipdb",
-    "boto3-stubs[s3]",
+    "types-boto3[s3]>=1.42.83",
     "types-python-dateutil",
     "types-requests",
     "basedpyright>=1.37.4",
@@ -31,6 +31,8 @@ dev = [
 
 [tool.pyright]
 typeCheckingMode = "recommended"
+reportAny = false
+reportExplicitAny = false
 
 [tool.ruff]
 line-length = 100

@@ -1,9 +1,10 @@
 import json
 import os
+from collections.abc import Iterable
 from datetime import datetime, timedelta, timezone
-from typing import TYPE_CHECKING, Any, Iterable
+from typing import TYPE_CHECKING, Any
 
-import boto3
+import boto3  # pyright:ignore[reportMissingTypeStubs]
 from botocore.exceptions import ClientError
 from flask import Flask, Response, abort, jsonify, request
 from flask_cors import CORS
@@ -14,18 +15,17 @@ from discutext_api.nws_office.models import NWSOfficeProperties
 from discutext_api.nws_weather_api import NWSWeatherAPI
 
 if TYPE_CHECKING:
-    from mypy_boto3_s3 import S3ServiceResource
-    from mypy_boto3_s3.type_defs import CopySourceTypeDef
-
+    from types_boto3_s3.service_resource import S3ServiceResource
+    from types_boto3_s3.type_defs import CopySourceTypeDef
 
 DISCUSSION_FETCH_TIMEOUT = timedelta(hours=1)
 
 DISCUTEXT_VERSION = "0.1.0"
 
 app = Flask(__name__)
-CORS(app)
+_ = CORS(app)
 
-s3: "S3ServiceResource" = boto3.resource("s3")
+s3: "S3ServiceResource" = boto3.resource("s3")  # pyright:ignore[reportAssignmentType, reportUnknownMemberType]
 
 user_agent = "discutext {v}: operations@discutext.com".format(v=DISCUTEXT_VERSION)
 nws_api = NWSWeatherAPI(user_agent=user_agent)
@@ -99,7 +99,7 @@ def latest_discussion(office_id: str) -> Any:
                 )
             )
             app.logger.info("Saving discussion to S3: s3://{}/{}".format(bucket, permanent_path))
-            obj.put(Body=discussion.model_dump_json())
+            _ = obj.put(Body=discussion.model_dump_json())
             copy_s3_object(s3, bucket, discussion_path, bucket, permanent_path)
             return discussion.model_dump()
     else:

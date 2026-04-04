@@ -1,7 +1,7 @@
 import logging
 import re
 from datetime import datetime
-from typing import List, Self
+from typing import Self
 
 from pydantic import BaseModel, field_serializer
 
@@ -15,7 +15,7 @@ HEADER_REGEX = re.compile(r"\.(?P<header>[\w \/]+)\.{3}(?P<text>.*)", re.DOTALL)
 
 class ForecastDiscussionSection(BaseModel):
     header: str
-    paragraphs: List[str]
+    paragraphs: list[str]
 
 
 class ForecastDiscussion(BaseModel):
@@ -24,7 +24,7 @@ class ForecastDiscussion(BaseModel):
     text: str
     wfo_id: str
     valid_at: datetime
-    sections: List[ForecastDiscussionSection]
+    sections: list[ForecastDiscussionSection]
 
     @field_serializer("valid_at")
     def serialize_valid_at(self, valid_at: datetime) -> str:
@@ -45,7 +45,7 @@ class ForecastDiscussion(BaseModel):
         return cls.from_afd_product(afd_product)
 
     @classmethod
-    def _clean_section_text(cls, text: str) -> List[str]:
+    def _clean_section_text(cls, text: str) -> list[str]:
         """Split into paragraphs.
 
         Steps:
@@ -60,7 +60,7 @@ class ForecastDiscussion(BaseModel):
         return [re.sub(r" +", " ", p.replace("\n", " ")).strip() for p in paragraphs if p]
 
     @classmethod
-    def _parse_text(cls, afd_text: str) -> List[ForecastDiscussionSection]:
+    def _parse_text(cls, afd_text: str) -> list[ForecastDiscussionSection]:
         if not afd_text:
             raise ValueError("afd_text cannot be empty")
         sections: list[str] = afd_text.split("&&")

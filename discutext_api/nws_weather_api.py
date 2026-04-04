@@ -1,7 +1,7 @@
 import logging
 import sys
 from datetime import datetime
-from typing import Any, Dict
+from typing import Any
 from urllib.parse import urljoin
 
 import requests
@@ -40,7 +40,8 @@ class AFDProduct(BaseModel):
 
 
 class NWSWeatherAPI:
-    session = requests.Session()
+    session: requests.Session = requests.Session()
+    user_agent: str
 
     def __init__(self, user_agent: str = "") -> None:
         self.user_agent = user_agent if user_agent else "python NWSWeatherAPI 0.0.1"
@@ -53,7 +54,7 @@ class NWSWeatherAPI:
         response.raise_for_status()
         return response
 
-    def get_products_types_locations(self, type_id: str, location_id: str) -> Dict[str, Any]:
+    def get_products_types_locations(self, type_id: str, location_id: str) -> dict[str, Any]:
         path = "/products/types/{t}/locations/{l}".format(t=type_id, l=location_id)
         response = self._get(path)
         return response.json()
